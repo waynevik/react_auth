@@ -7,7 +7,7 @@ const LOGIN_URL = '/auth';
 
 const Login = () => {
 
-    const{ setAuth } = useAuth();
+    const{ setAuth, persist, setPersist } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -65,6 +65,13 @@ const Login = () => {
         }
     }
 
+    useEffect( () => {
+        localStorage.setItem("persist", persist);
+    }, [persist])
+    const togglePersist = () => {
+        setPersist(prev => !prev);
+    }
+
     return (
        <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "off-screen"} aria-live="assertive">{errMsg}</p>
@@ -91,6 +98,16 @@ const Login = () => {
                 />
 
                 <button>Sign In</button>
+
+                <div className="persistCheck">
+                    <input 
+                    type="checkbox"
+                    id="persist"
+                    onChange={togglePersist}
+                    checked={persist}
+                     />
+                    <label htmlFor="persist"> Trust This Device</label>
+                </div>
 
             </form>
             <p>
